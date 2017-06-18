@@ -1,6 +1,6 @@
 from subprocess import Popen
-import time
 import config as cfg
+import time
 
 class avstreamer:
     sendVideoStreamHandle = False
