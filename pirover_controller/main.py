@@ -17,6 +17,11 @@ def startstream():
 def stopstream():
         avstreamer.stopStream()
         return jsonify({'terminated':True})
+
+@app.route('/restream',methods=['GET'])
+def restream():
+        avstreamer.reStream()
+        return jsonify({'reStreamed':True})
 		
 if __name__ == '__main__':
 	app.run(host='0.0.0.0',debug=True,port=8080)
