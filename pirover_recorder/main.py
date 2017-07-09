@@ -1,23 +1,10 @@
-from flask import Flask, jsonify, request
-from AVrecorder import avrecorder
+from piroversockets import Pirover_RecorderSocket
+from socketIO_client import SocketIO, LoggingNamespace
+import config as cfg
 
-app=Flask(__name__)
+socketIO = SocketIO(cfg.socketIOHost, cfg.socketIOHostPort, LoggingNamespace)
 
-@app.route('/',methods=['GET'])
-def test():
-	return jsonify({'state':'running'})
-	
+recorderSock = socketIO.define(Pirover_RecorderSocket, '/RecorderCmdSock')
+recorderSock.on('startrecording', recorderSock.startRecording)
 
-@app.route('/recordstream/<string:filename>',methods=['GET'])
-def recordstream(filename):
-	print("Request recieved to print {}".format(filename))
-        newavRecorder = avrecorder(filename)
-	newavRecorder.startRecording();
-        return jsonify({'called':True})
-	
-@app.route('/downloadfile/<string:filename>',methods=['GET'])
-def stopstream(filename):
-        return jsonify({'terminated':True})
-		
-if __name__ == '__main__':
-	app.run(host='0.0.0.0',debug=True,port=8080)
+socketIO.wait()
