@@ -1,4 +1,10 @@
 #Global configurations
 
-videoStreamingCommand=['ffmpeg', '-r', '15', '-s', '640x480', '-i', '/dev/video0', '-vf' ,'"setpts=1.5*PTS"', 'http://<media server>/<video feed>']
-audioStreamingCommand=['ffmpeg', '-f', 'alsa', '-ac', '1', '-i', 'default', '-acodec', 'aac','http://<media server>/<sound feed>']
+videoStreamingCommand=['ffmpeg', '-s', 'hd480', '-i', '/dev/video0', '-an', 'http://xxxxxxxxxxxxxxxxxxxxxxxxxxxxx']
+audioStreamingCommand=['ffmpeg', '-vn', '-f', 'alsa', '-ac', '1', '-i', 'hw:1', 'http://xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx']
+motor1DirectionOnePin = 5
+motor1DirectionTwoPin = 6
+motor2DirectionOnePin = 20
+motor2DirectionTwoPin = 21
+ultraSonicTrigger = 18
+ultraSonicReciver = 24
