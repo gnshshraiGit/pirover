@@ -32,6 +32,12 @@ class avstreamer:
                             cls.sendAudioStreamHandle.terminate()
                     else:
                             break
+
+    @classmethod
+    def reStream(cls):
+        cls.stopStream()
+        time.sleep(2)
+        cls.startStream()
                         
     @classmethod               
     def isStreaming(cls):
