@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.0/socket.io.min.js"></script>
+</head>
+<body>
+    <img style="-webkit-user-select: none;" src="http://rpimediaserver7181.cloudapp.net:8090/test.mjpg" width="766" height="432">
+    <audio autoplay="autoplay" name="media">
+        <source src="http://rpimediaserver7181.cloudapp.net:8090/test.mp3" type="audio/mpeg">
+    </audio>
+
+    <table>
+        <tr>
+            <td><a href="#" id="startRecording">start Recording</a></td>
+            <td><a href="#" id="stopStream">stop Stream</a></td>
+            <td><a href="#" id="reStream">re Stream</a></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><a href="#" id="gofwd">^</a></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><a href="#" id="golft"><</a></td>
+            <td><a href="#" id="estop" style="color:red">***</a></td>
+            <td><a href="#" id="gorit">></a></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><a href="#" id="gobkd">v</a></td>
+            <td></td>
+        </tr>
+    </table>
+<script>
+    $(document).ready(function () {
+        (function(){
+            var streamer = io.connect('/StreamCmdSock');
+            var walker = io.connect('/WalkCmdSock');
+            var recorder = io.connect('/RecorderCmdSock');
+            streamer.on('connect', function () {
+                console.log('Streamer Connected');
+                streamer.emit('startstream', {});
+                $('#stopStream').on('click', function () {
+                    streamer.emit('stopstream', {});
+                });
+                $('#reStream').on('click', function () {
+                    streamer.emit('restream', {});
+                });
+
+            });
+            walker.on('connect', function () {
+                console.log('Walker Connected');
+                $('#gofwd').on('mousedown', function () {
+                    walker.emit('gofwd', {});
+                }).on('mouseup', function () {
+                    walker.emit('stop', {});
+                });
+                $('#gobkd').on('mousedown', function () {
+                    walker.emit('gobkd', {});
+                }).on('mouseup', function () {
+                    walker.emit('stop', {});
+                });
+                $('#gorit').on('mousedown', function () {
+                    walker.emit('gorit', {});
+                }).on('mouseup', function () {
+                    walker.emit('stop', {});
+                });
+                $('#golft').on('mousedown', function () {
+                    walker.emit('golft', {});
+                }).on('mouseup', function () {
+                    walker.emit('stop', {});
+                });
+                $('#estop').on('mousedown', function () {
+                    walker.emit('estop', {});
+                });
+            });
+            walker.on('status', function (data) {
+                console.log(data['direction']);
+            });
+            recorder.on('connect', function () {
+                console.log('Recorder Connected');
+                $('#startRecording').on('click', function () {
+                    recorder.emit('startrecording', {});
+                });
+            });
+            recorder.on('recordingcomplete', function (data) {
+                console.log(data['download']);
+            });
+        })();
+    });
+</script>
+</body>
+
+</html>
