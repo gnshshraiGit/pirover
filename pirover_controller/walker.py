@@ -1,7 +1,6 @@
 import RPi.GPIO as GPIO
 import time
 import asyncio
-import sys
 import config as cfg
 
 class walker:
@@ -9,7 +8,7 @@ class walker:
     isInitialized = False
 
     @classmethod    
-    def init(cls):
+    def init(cls, walkerCmdSock,curntServing):
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(cfg.motor1DirectionOnePin, GPIO.OUT)
         GPIO.setup(cfg.motor1DirectionTwoPin, GPIO.OUT)
@@ -56,6 +55,7 @@ class walker:
         GPIO.output(cfg.motor2DirectionTwoPin, False)
         GPIO.output(cfg.motor1DirectionOnePin, True)
         GPIO.output(cfg.motor2DirectionOnePin, True)
+        cls.walkerCmdSock.emit('status',{'sid':cls.curntServing,'direction':'Going Forward'})
 
     @asyncio.coroutine
     def goBkd(cls):
@@ -63,6 +63,7 @@ class walker:
         GPIO.output(cfg.motor2DirectionOnePin, False)
         GPIO.output(cfg.motor1DirectionTwoPin, True)
         GPIO.output(cfg.motor2DirectionTwoPin, True)
+        cls.walkerCmdSock.emit('status',{'sid':cls.curntServing,'direction':'Going Back'})
 
     @asyncio.coroutine
     def goLft(cls):
@@ -70,6 +71,7 @@ class walker:
         GPIO.output(cfg.motor2DirectionOnePin, True)
         GPIO.output(cfg.motor1DirectionTwoPin, True)
         GPIO.output(cfg.motor2DirectionTwoPin, False)
+        cls.walkerCmdSock.emit('status',{'sid':cls.curntServing,'direction':'Going Left'})
 
     @asyncio.coroutine
     def goRit(cls):
@@ -77,6 +79,7 @@ class walker:
         GPIO.output(cfg.motor2DirectionOnePin, False)
         GPIO.output(cfg.motor1DirectionTwoPin, False)
         GPIO.output(cfg.motor2DirectionTwoPin, True)
+        cls.walkerCmdSock.emit('status',{'sid':cls.curntServing,'direction':'Going Right'})
 
     @asyncio.coroutine
     def stop(cls):
@@ -84,6 +87,7 @@ class walker:
         GPIO.output(cfg.motor2DirectionOnePin, False)
         GPIO.output(cfg.motor1DirectionTwoPin, False)
         GPIO.output(cfg.motor2DirectionTwoPin, False)
+        cls.walkerCmdSock.emit('status',{'sid':cls.curntServing,'direction':'Stop'})
 
 
     @classmethod
@@ -111,17 +115,17 @@ class walker:
             TimeElapsed = StopTime - StartTime
             distance = (TimeElapsed * 17150)
             print(distance)
-            if distance <= 15 or distance > 600:
+            if distance <= 15 or distance > 900:
                 cls.ioloop.run_until_complete(cls.goBkd(cls))
-                time.sleep(0.5)
-                cls.ioloop.run_until_complete(cls.goRit(cls))
-                time.sleep(0.5)
-                cls.ioloop.run_until_complete(cls.goFwd(cls))
+                cls.walkerCmdSock.emit('status',{'sid':cls.curntServing,'err':'XXX stay back, path blocked XXX'})
+                time.sleep(1)
 
     @classmethod
-    def runRover(cls):
+    def runRover(cls, walkerCmdSock,curntServing):
+        cls.walkerCmdSock = walkerCmdSock
+        cls.curntServing = curntServing
         if not cls.isInitialized:
-            cls.init()
+            cls.init(walkerCmdSock,curntServing)
         if cls.isObstacle == False:
             if cls.direction != None:
                 cls.ioloop.run_until_complete(cls.movement[cls.direction](cls))
@@ -129,3 +133,5 @@ class walker:
                 cls.direction = None
         else:
             pass
+
+
