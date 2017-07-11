@@ -84,7 +84,7 @@ def recordCmdSock_complete(sid,data):
 
 if __name__ == '__main__':
     import os
-    HOST = os.environ.get('SERVER_HOST', 'localhost')
+    HOST = '0.0.0.0' #os.environ.get('SERVER_HOST', 'localhost')
     try:
         PORT = int(os.environ.get('SERVER_PORT', '5555'))
     except ValueError:
