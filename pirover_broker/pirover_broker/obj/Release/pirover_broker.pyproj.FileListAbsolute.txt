@@ -1,9 +1,0 @@
-D:\Projects\Nodejs\Web\Python-with-Rpi3\pirover\pirover_broker\pirover_broker\bin\Microsoft.PythonTools.WebRole.dll
-D:\Projects\Nodejs\Web\Python-with-Rpi3\pirover\pirover_broker\pirover_broker\bin\AzureSetup.cfg
-D:\Projects\Nodejs\Web\Python-with-Rpi3\pirover\pirover_broker\pirover_broker\bin\Microsoft.PythonTools.AzureSetup.exe
-D:\Projects\Nodejs\Web\Python-with-Rpi3\pirover\pirover_broker\pirover_broker\bin\Microsoft.PythonTools.AzureSetup.exe.config
-D:\Projects\Nodejs\Web\Python-with-Rpi3\pirover\pirover_broker\pirover_broker\bin\wfastcgi.py
-D:\Projects\Nodejs\Web\Python-with-Rpi3\pirover\pirover_broker\pirover_broker\ptvs_virtualenv_proxy.py
-D:\Projects\Nodejs\Web\Python-with-Rpi3\pirover\pirover_broker\pirover_broker\obj\Release\web.config
-D:\Projects\Nodejs\Web\Python-with-Rpi3\pirover\pirover_broker\pirover_broker\obj\Release\web.debug.config
-D:\Projects\Nodejs\Web\Python-with-Rpi3\pirover\pirover_broker\pirover_broker\obj\Release\deployment-updated-orig-prefix.txt

@@ -10,6 +10,7 @@ import datetime
 
 app = Flask(__name__)
 
+app.secret_key = "my-secret-key"
 # Make the WSGI interface available at the top level so wfastcgi can get it.
 #wsgi_app = app.wsgi_app
 
@@ -89,8 +90,8 @@ if __name__ == '__main__':
     except ValueError:
         PORT = 5555
 
-    # wrap Flask application with socketio's middleware
+        #wrap Flask application with socketio's middleware
     app = socketio.Middleware(sio, app)
 
-    # deploy as an eventlet WSGI server
+        # deploy as an eventlet WSGI server
     eventlet.wsgi.server(eventlet.listen((HOST, PORT)), app)
