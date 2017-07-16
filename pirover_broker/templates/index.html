@@ -75,7 +75,7 @@
     </nav>
 
     <audio autoplay="autoplay" name="media">
-        <source type="audio/mpeg">
+        <source id="audio-src" type="audio/mpeg">
     </audio>
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-md-offset-1 col-lg-offset-2">
@@ -195,16 +195,16 @@
                     console.log('Streamer Connected');
                     streamer.emit('startstream', {});
                     $('img.video-panel').attr('src', vidSrc);
-                    $('audio>source').attr('src', audSrc);
+                    $('#audio-src').attr('src', audSrc);
                     $('#stopStream').on('click', function () {
                         streamer.emit('stopstream', {});
                         $('img.video-panel').attr('src', '');
-                        $('audio>source').attr('src', '');
+                        $('#audio-src').attr('src', '');
                         util.addSuccess('Streaming stoped')
                     });
                     $('#reStream').on('click', function () {
                         $('img.video-panel').attr('src', vidSrc);
-                        $('audio>source').attr('src', audSrc);
+                        $('#audio-src').attr('src', audSrc);
                         streamer.emit('restream', {});
                         util.addSuccess('Restreaming takes time to initiate , please wait 10-15 seconds')
                     });
