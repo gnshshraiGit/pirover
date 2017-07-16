@@ -75,11 +75,11 @@
     </nav>
 
     <audio autoplay="autoplay" name="media">
-        <source src="http://rpimediaserver7181.cloudapp.net:8090/test.mp3" type="audio/mpeg">
+        <source type="audio/mpeg">
     </audio>
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-md-offset-1 col-lg-offset-2">
-                <img class="video-panel" src="http://rpimediaserver7181.cloudapp.net:8090/test.mjpg" />
+                <img class="video-panel" />
         </div>
         <div class="hidden-xs hidden-sm col-md-3 col-lg-3 ">
             <div class="row">
@@ -185,7 +185,9 @@
                 vph = $(window).height();
                 $(".video-panel").css({"height": vph});
             }
-            (function(){
+            (function () {
+                var audSrc = "http://rpimediaserver7181.cloudapp.net:8090/test.mp3";
+                var vidSrc = "http://rpimediaserver7181.cloudapp.net:8090/test.mjpg";
                 var streamer = io.connect('/StreamCmdSock');
                 var walker = io.connect('/WalkCmdSock');
                 var recorder = io.connect('/RecorderCmdSock');
@@ -194,11 +196,13 @@
                     streamer.emit('startstream', {});
                     $('#stopStream').on('click', function () {
                         streamer.emit('stopstream', {});
+                        $('img.video-panel').attr('src', '');
+                        $('audio>source').attr('src', '');
                         util.addSuccess('Streaming stoped')
                     });
                     $('#reStream').on('click', function () {
-                        $('img.video-panel').attr('src', $('img.video-panel').attr('src'));
-                        $('audio>source').attr('src', $('audio>source').attr('src'));
+                        $('img.video-panel').attr('src', vidSrc);
+                        $('audio>source').attr('src', audSrc);
                         streamer.emit('restream', {});
                         util.addSuccess('Restreaming takes time to initiate , please wait 10-15 seconds')
                     });
