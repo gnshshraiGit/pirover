@@ -264,7 +264,8 @@
             },
             'addDwnldLink': function (link) {
                 var rndId = Date.now();
-                var infoHtml = '<div id="' + rndId + '"class="alert alert-info alert-dismissable"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong class="status-type">Info!</strong><div class="Msg"></div></div>';
+                var dwnldAnchor = '<a href="'+ link +'">Click to download Video valid only for 5 mins</a>'
+                var infoHtml = '<div id="' + rndId + '"class="alert alert-info alert-dismissable"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong class="status-type">Info!</strong><div class="Msg">' + dwnldAnchor + '</div></div>';
                 $('.DownloadLinkPost').append(infoHtml);
                 $('.DownloadLinkPost').show();
                 this.removeDwnldLink(rndId);
