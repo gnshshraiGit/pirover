@@ -80,7 +80,7 @@ def recordCmdSock_start(sid,data):
 
 @sio.on('recordingcomplete', namespace='/RecorderCmdSock')
 def recordCmdSock_complete(sid,data):
-    sio.emit('recordingcomplete', data, namespace='/RecorderCmdSock')
+    sio.emit('recordingcomplete', data, room=data['sid'], namespace='/RecorderCmdSock')
 
 if __name__ == '__main__':
     import os
