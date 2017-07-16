@@ -6,94 +6,273 @@
     <title></title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.0/socket.io.min.js"></script>
+    <style>
+        body, html {
+            height: 100%;
+            margin:0;
+        }
+        nav {
+            z-index:1001;
+        }
+        .video-panel {
+            width:100%;
+            max-height:462px;
+        }
+        .overlay-remote-panel {
+            z-index: 1000;
+            position: absolute;
+            top: 70px;
+            height: 100%;
+            background-size: cover;
+            padding:0;
+        }
+        .mid-button-panel {
+            height:70%;
+            max-height:324px;
+        }
+        .upper-button-panel,.lower-button-panel {
+            height:15%;
+            max-height:70px;
+        }
+        .mid-button-panel div,.upper-button-panel div,.lower-button-panel div {
+            height: 100%;
+        }
+        .mid-button-panel button,.upper-button-panel button,.lower-button-panel button {
+            height:100%;
+            opacity: 0.01;
+        }
+        .mid-button-panel button:active,.upper-button-panel button:active,.lower-button-panel button:active {
+            opacity:0.3;
+        }
+    </style>
 </head>
 <body>
-    <img style="-webkit-user-select: none;" src="http://rpimediaserver7181.cloudapp.net:8090/test.mjpg" width="766" height="432">
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Pirover</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li><a href="https://github.com/gnshshraiGit/pirover" target="_blank"><span class="glyphicon glyphicon-qrcode"></span> Source Code</a></li>
+                    <li><a href="https://github.com/gnshshraiGit/pirover/archive/master.zip"><span class="glyphicon glyphicon-cloud-download"></span> Download Source Code</a></li>
+                    <li><a href="#" id="startRecording"><span class="glyphicon glyphicon-film"></span> Start Recording</a></li>
+                    <li><a href="#" id="stopStream"><span class="glyphicon glyphicon-stop"></span> Stop Stream</a></li>
+                    <li><a href="#" id="reStream"><span class="glyphicon glyphicon-facetime-video"></span> Re-Stream</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
     <audio autoplay="autoplay" name="media">
         <source src="http://rpimediaserver7181.cloudapp.net:8090/test.mp3" type="audio/mpeg">
     </audio>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-md-offset-1 col-lg-offset-2">
+                <img class="video-panel" src="http://rpimediaserver7181.cloudapp.net:8090/test.mjpg" />
+        </div>
+        <div class="hidden-xs hidden-sm col-md-3 col-lg-3 ">
+            <div class="row">
+                <div class="col-md-12 col-lg-12">
+                    <button type="button" id="gofwd" style="width:100%">
+                        <span class="glyphicon glyphicon-chevron-up"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 col-lg-3">
+                    <button type="button" id="golft" style="width:100%">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                    </button>
+                </div>
+                <div class="col-md-6 col-lg-6">
+                    <button type="button" id="estop" style="width:100%">
+                        <span class="glyphicon glyphicon-stop"></span>
+                    </button>
+                </div>
+                <div class="col-md-3 col-lg-3">
+                    <button type="button" id="gorit" style="width:100%">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-lg-12">
+                    <button type="button" id="gobkd" style="width:100%">
+                        <span class="glyphicon glyphicon-chevron-down"></span>
+                    </button>
+                </div>
+            </div>
+            <p></p>
+            <div class="row">
+                <div class="col-md-12 col-lg-12 ErrPost">
+                    <div class="alert alert-dismissable">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong class="status-type">Success!</strong>
+                        <div class="Msg"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-lg-12 DownloadLinkPost">
+                    <div class="alert alert-info alert-dismissable">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong class="status-type">Info!</strong>
+                        <div class="Msg"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 hidden-md hidden-lg overlay-remote-panel">
+        <div class="row upper-button-panel">
+            <div class="col-xs-12 col-sm-12">
+                <button type="button" id="gofwd" style="width:100%">
+                    <span class="glyphicon glyphicon-chevron-up"></span>
+                </button>
+            </div>
+        </div>
+        <div class="row mid-button-panel">
+            <div class="col-xs-3 col-sm-3">
+                <button type="button" id="golft" style="width:100%">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                </button>
+            </div>
+            <div class="col-xs-6 col-sm-6">
+                <button type="button" id="estop" style="width:100%">
+                    <span class="glyphicon glyphicon-stop"></span>
+                </button>
+            </div>
+            <div class="col-xs-3 col-sm-3">
+                <button type="button" id="gorit" style="width:100%">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                </button>
+            </div>
+        </div>
+        <div class="row lower-button-panel">
+            <div class="col-xs-12 col-sm-12">
+                <button type="button" id="gobkd" style="width:100%">
+                    <span class="glyphicon glyphicon-chevron-down"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).click(function (event) {
+            var clickover = $(event.target);
+            var $navbar = $(".navbar-collapse");
+            var _opened = $navbar.hasClass("in");
+            if (_opened === true && !clickover.hasClass("navbar-toggle")) {
+                $navbar.collapse('hide');
+            }
+        });
+        $(document).ready(function () {
+            resizeDiv();
+            window.onresize = function(event) {
+                resizeDiv();
+            }
+            function resizeDiv() {
+                vph = $(window).height();
+                $(".video-panel").css({"height": vph});
+            }
+            (function(){
+                var streamer = io.connect('/StreamCmdSock');
+                var walker = io.connect('/WalkCmdSock');
+                var recorder = io.connect('/RecorderCmdSock');
+                streamer.on('connect', function () {
+                    console.log('Streamer Connected');
+                    streamer.emit('startstream', {});
+                    $('#stopStream').on('click', function () {
+                        streamer.emit('stopstream', {});
+                        util.addSuccess('Streaming stoped')
+                    });
+                    $('#reStream').on('click', function () {
+                        streamer.emit('restream', {});
+                        util.addSuccess('Restreaming takes time to initiate , please wait 10-15 seconds')
+                    });
 
-    <table>
-        <tr>
-            <td><a href="#" id="startRecording">start Recording</a></td>
-            <td><a href="#" id="stopStream">stop Stream</a></td>
-            <td><a href="#" id="reStream">re Stream</a></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><a href="#" id="gofwd">^</a></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><a href="#" id="golft"><</a></td>
-            <td><a href="#" id="estop" style="color:red">***</a></td>
-            <td><a href="#" id="gorit">></a></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><a href="#" id="gobkd">v</a></td>
-            <td></td>
-        </tr>
-    </table>
-<script>
-    $(document).ready(function () {
-        (function(){
-            var streamer = io.connect('/StreamCmdSock');
-            var walker = io.connect('/WalkCmdSock');
-            var recorder = io.connect('/RecorderCmdSock');
-            streamer.on('connect', function () {
-                console.log('Streamer Connected');
-                streamer.emit('startstream', {});
-                $('#stopStream').on('click', function () {
-                    streamer.emit('stopstream', {});
                 });
-                $('#reStream').on('click', function () {
-                    streamer.emit('restream', {});
+                walker.on('connect', function () {
+                    console.log('Walker Connected');
+                    $('#gofwd').on('mousedown', function () {
+                        walker.emit('gofwd', {});
+                    }).on('mouseup', function () {
+                        walker.emit('stop', {});
+                    });
+                    $('#gobkd').on('mousedown', function () {
+                        walker.emit('gobkd', {});
+                    }).on('mouseup', function () {
+                        walker.emit('stop', {});
+                    });
+                    $('#gorit').on('mousedown', function () {
+                        walker.emit('gorit', {});
+                    }).on('mouseup', function () {
+                        walker.emit('stop', {});
+                    });
+                    $('#golft').on('mousedown', function () {
+                        walker.emit('golft', {});
+                    }).on('mouseup', function () {
+                        walker.emit('stop', {});
+                    });
+                    $('#estop').on('mousedown', function () {
+                        walker.emit('estop', {});
+                    });
+                }).on('status', function (data) {
+                    if(data.hasOwnProperty('direction'))
+                        console.log(data['direction']);
+                    if (data.hasOwnProperty('err')) {
+                        console.log(data['err']);
+                        util.addError(data['err']);
+                    }
                 });
+                recorder.on('connect', function () {
+                    console.log('Recorder Connected');
+                    $('#startRecording').on('click', function () {
+                        recorder.emit('startrecording', {});
+                        util.addSuccess('30 sec Recording Started');
+                    });
+                }).on('recordingcomplete', function (data) {
+                    util.addDwnldLink(data['download']);
+                });
+            })();
+        });
 
-            });
-            walker.on('connect', function () {
-                console.log('Walker Connected');
-                $('#gofwd').on('mousedown', function () {
-                    walker.emit('gofwd', {});
-                }).on('mouseup', function () {
-                    walker.emit('stop', {});
-                });
-                $('#gobkd').on('mousedown', function () {
-                    walker.emit('gobkd', {});
-                }).on('mouseup', function () {
-                    walker.emit('stop', {});
-                });
-                $('#gorit').on('mousedown', function () {
-                    walker.emit('gorit', {});
-                }).on('mouseup', function () {
-                    walker.emit('stop', {});
-                });
-                $('#golft').on('mousedown', function () {
-                    walker.emit('golft', {});
-                }).on('mouseup', function () {
-                    walker.emit('stop', {});
-                });
-                $('#estop').on('mousedown', function () {
-                    walker.emit('estop', {});
-                });
-            });
-            walker.on('status', function (data) {
-                console.log(data['direction']);
-            });
-            recorder.on('connect', function () {
-                console.log('Recorder Connected');
-                $('#startRecording').on('click', function () {
-                    recorder.emit('startrecording', {});
-                });
-            });
-            recorder.on('recordingcomplete', function (data) {
-                console.log(data['download']);
-            });
-        })();
-    });
-</script>
+        util = {
+            'addError': function (message) {
+                this.clearStatus();
+                $('#ErrPost').find('div.alert').addClass('alert-danger');
+                $('#ErrPost').find('strong.status-type').html('Danger!');
+                $('#ErrPost').find('div.Msg').html(message);
+            },
+            'addSuccess': function (message) {
+                this.clearStatus();
+                $('#ErrPost').find('div.alert').addClass('alert-success');
+                $('#ErrPost').find('strong.status-type').html('Success!');
+                $('#ErrPost').find('div.Msg').html(message);
+            },
+            'addDwnldLink': function (link) {
+                var rndId = Date.now();
+                var infoHtml = '<div id="' + rndId + '"class="alert alert-info alert-dismissable"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong class="status-type">Info!</strong><div class="Msg"></div></div>';
+                $('.DownloadLinkPost').append(infoHtml);
+                this.removeDwnldLink(rndId);
+            },
+            'removeDwnldLink': function(rndId){
+                setTimeout(function (rndId) {
+                    $('#' + rndId).remove();
+                }, 300 * 1000);
+            },
+            'clearStatus': function () {
+                $('#ErrPost').find('div.alert').removeClass('alert-danger').removeClass('alert-success');
+            }
+        }
+    </script>
 </body>
 
 </html>
