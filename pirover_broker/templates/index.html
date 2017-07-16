@@ -194,6 +194,8 @@
                 streamer.on('connect', function () {
                     console.log('Streamer Connected');
                     streamer.emit('startstream', {});
+                    $('img.video-panel').attr('src', vidSrc);
+                    $('audio>source').attr('src', audSrc);
                     $('#stopStream').on('click', function () {
                         streamer.emit('stopstream', {});
                         $('img.video-panel').attr('src', '');
