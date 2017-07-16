@@ -197,10 +197,9 @@
                         util.addSuccess('Streaming stoped')
                     });
                     $('#reStream').on('click', function () {
-                        $('img.video-pane').attr('src', $('img.video-pane').attr('src'));
-                        $('audio>source').attr('src', $('audio>source').attr('src'));
+                        $('img.video-panel').attr('src', $('img.video-panel').attr('src')).reload();
+                        $('audio>source').attr('src', $('audio>source').attr('src')).reload();
                         streamer.emit('restream', {});
-
                         util.addSuccess('Restreaming takes time to initiate , please wait 10-15 seconds')
                     });
 
