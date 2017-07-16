@@ -75,7 +75,7 @@
     </nav>
 
     <audio autoplay="autoplay" name="media">
-        <source id="audio-src" type="audio/mpeg">
+        <source src="http://rpimediaserver7181.cloudapp.net:8090/test.mp3" id="audio-src" type="audio/mpeg">
     </audio>
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-md-offset-1 col-lg-offset-2">
@@ -186,7 +186,7 @@
                 $(".video-panel").css({"height": vph});
             }
             (function () {
-                var audSrc = "http://rpimediaserver7181.cloudapp.net:8090/test.mp3";
+                //var audSrc = "http://rpimediaserver7181.cloudapp.net:8090/test.mp3";
                 var vidSrc = "http://rpimediaserver7181.cloudapp.net:8090/test.mjpg";
                 var streamer = io.connect('/StreamCmdSock');
                 var walker = io.connect('/WalkCmdSock');
@@ -195,16 +195,16 @@
                     console.log('Streamer Connected');
                     streamer.emit('startstream', {});
                     $('img.video-panel').attr('src', vidSrc);
-                    $('#audio-src').attr('src', audSrc).play();
+                    //$('#audio-src').attr('src', audSrc);
                     $('#stopStream').on('click', function () {
                         streamer.emit('stopstream', {});
                         $('img.video-panel').attr('src', '');
-                        $('#audio-src').attr('src', '');
+                        //$('#audio-src').attr('src', '');
                         util.addSuccess('Streaming stoped')
                     });
                     $('#reStream').on('click', function () {
                         $('img.video-panel').attr('src', vidSrc);
-                        $('#audio-src').attr('src', audSrc).play();
+                        //$('#audio-src').attr('src', audSrc);
                         streamer.emit('restream', {});
                         util.addSuccess('Restreaming takes time to initiate , please wait 10-15 seconds')
                     });
