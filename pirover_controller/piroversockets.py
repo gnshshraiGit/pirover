@@ -91,12 +91,10 @@ class Pirover_WalkerCmdSocket(BaseNamespace):
         def estop(self, data):
                 global isBusy
                 global curntServing
-                if curntServing != data['sid']:
-                        self.emit('status',{'sid': data['sid'],'err':'Rover is busy serving another user'})
-                        return
-                walker.direction = 'l'
-                walker.runRover(self,curntServing)
-                isBusy = False
-                curntServing = None
-                walker.cleanup()
+                if curntServing == None:
+                        walker.direction = 'l'
+                        walker.runRover(self,curntServing)
+                        isBusy = False
+                        curntServing = None
+                        walker.cleanup()
                 return

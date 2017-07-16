@@ -116,9 +116,13 @@ class walker:
             distance = (TimeElapsed * 17150)
             print(distance)
             if distance <= 15 or distance > 900:
+                cls.isObstacle = True
                 cls.ioloop.run_until_complete(cls.goBkd(cls))
                 cls.walkerCmdSock.emit('status',{'sid':cls.curntServing,'err':'XXX stay back, path blocked XXX'})
                 time.sleep(1)
+                cls.ioloop.run_until_complete(cls.stop(cls))
+                cls.isObstacle = False
+                
 
     @classmethod
     def runRover(cls, walkerCmdSock,curntServing):
