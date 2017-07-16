@@ -46,6 +46,9 @@
         .mid-button-panel button:active,.upper-button-panel button:active,.lower-button-panel button:active {
             opacity:0.3;
         }
+        .ErrPost, .DownloadLinkPost {
+            display:none;
+        }
     </style>
 </head>
 <body>
@@ -247,29 +250,35 @@
         util = {
             'addError': function (message) {
                 this.clearStatus();
-                $('#ErrPost').find('div.alert').addClass('alert-danger');
-                $('#ErrPost').find('strong.status-type').html('Danger!');
-                $('#ErrPost').find('div.Msg').html(message);
+                $('.ErrPost').find('strong.status-type').html('Danger!');
+                $('.ErrPost').find('div.Msg').html(message);
+                $('.ErrPost').find('div.alert').addClass('alert-danger');
+                $('.ErrPost').show();
             },
             'addSuccess': function (message) {
                 this.clearStatus();
-                $('#ErrPost').find('div.alert').addClass('alert-success');
-                $('#ErrPost').find('strong.status-type').html('Success!');
-                $('#ErrPost').find('div.Msg').html(message);
+                $('.ErrPost').find('strong.status-type').html('Success!');
+                $('.ErrPost').find('div.Msg').html(message);
+                $('.ErrPost').find('div.alert').addClass('alert-success').show();
+                $('.ErrPost').show();
             },
             'addDwnldLink': function (link) {
                 var rndId = Date.now();
                 var infoHtml = '<div id="' + rndId + '"class="alert alert-info alert-dismissable"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong class="status-type">Info!</strong><div class="Msg"></div></div>';
                 $('.DownloadLinkPost').append(infoHtml);
+                $('.DownloadLinkPost').show();
                 this.removeDwnldLink(rndId);
             },
             'removeDwnldLink': function(rndId){
                 setTimeout(function (rndId) {
                     $('#' + rndId).remove();
+                    if ($(".DownloadLinkPost > div.alert").length === 0) {
+                        $(".DownloadLinkPost").hide();
+                    }
                 }, 300 * 1000);
             },
             'clearStatus': function () {
-                $('#ErrPost').find('div.alert').removeClass('alert-danger').removeClass('alert-success');
+                $('.ErrPost').find('div.alert').removeClass('alert-danger').removeClass('alert-success');
             }
         }
     </script>
