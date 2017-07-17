@@ -128,7 +128,7 @@
             <p></p>
             <div class="row">
                 <div class="col-md-12 col-lg-12 ErrPost">
-                    <div class="alert alert-dismissable">
+                    <div class="alert">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                         <strong class="status-type">Success!</strong>
                         <div class="Msg"></div>
@@ -176,7 +176,7 @@
     <div class="col-xs-12 col-sm-12 hidden-md hidden-lg overlay-error-panel">
         <div class="row">
             <div class="col-md-12 col-lg-12 ErrPost">
-                <div class="alert alert-dismissable">
+                <div class="alert">
                     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                     <strong class="status-type">Success!</strong>
                     <div class="Msg"></div>
@@ -286,7 +286,6 @@
                 $('.ErrPost').find('div.alert').addClass('alert-danger');
                 $('.overlay-error-panel').show();
                 $('.ErrPost').show();
-                $('.alert').show();
             },
             'addSuccess': function (message) {
                 this.clearStatus();
@@ -295,7 +294,6 @@
                 $('.ErrPost').find('div.alert').addClass('alert-success');
                 $('.overlay-error-panel').show();
                 $('.ErrPost').show();
-                $('.alert').show();
             },
             'addDwnldLink': function (link) {
                 var dwnldAnchor = '<a href="'+ link +'">Click to download Video valid only for 5 mins</a>'
