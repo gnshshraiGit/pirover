@@ -143,31 +143,31 @@
     <div class="col-xs-12 col-sm-12 hidden-md hidden-lg overlay-remote-panel">
         <div class="row upper-button-panel">
             <div class="col-xs-12 col-sm-12">
-                <button type="button" id="gofwd" style="width:100%">
+                <button type="button" id="Mgofwd" style="width:100%">
                     <span class="glyphicon glyphicon-chevron-up"></span>
                 </button>
             </div>
         </div>
         <div class="row mid-button-panel">
             <div class="col-xs-3 col-sm-3">
-                <button type="button" id="golft" style="width:100%">
+                <button type="button" id="Mgolft" style="width:100%">
                     <span class="glyphicon glyphicon-chevron-left"></span>
                 </button>
             </div>
             <div class="col-xs-6 col-sm-6">
-                <button type="button" id="estop" style="width:100%">
+                <button type="button" id="Mestop" style="width:100%">
                     <span class="glyphicon glyphicon-stop"></span>
                 </button>
             </div>
             <div class="col-xs-3 col-sm-3">
-                <button type="button" id="gorit" style="width:100%">
+                <button type="button" id="Mgorit" style="width:100%">
                     <span class="glyphicon glyphicon-chevron-right"></span>
                 </button>
             </div>
         </div>
         <div class="row lower-button-panel">
             <div class="col-xs-12 col-sm-12">
-                <button type="button" id="gobkd" style="width:100%">
+                <button type="button" id="Mgobkd" style="width:100%">
                     <span class="glyphicon glyphicon-chevron-down"></span>
                 </button>
             </div>
@@ -215,13 +215,13 @@
                     streamer.emit('startstream', {});
                     $('img.video-panel').attr('src', vidSrc);
                     //$('#audio-src').attr('src', audSrc);
-                    $('#stopStream').live('click', function () {
+                    $('#stopStream').on('click', function () {
                         streamer.emit('stopstream', {});
                         $('img.video-panel').attr('src', '');
                         //$('#audio-src').attr('src', '');
                         util.addSuccess('Streaming stoped')
                     });
-                    $('#reStream').live('click', function () {
+                    $('#reStream').on('click', function () {
                         $('img.video-panel').attr('src', vidSrc);
                         //$('#audio-src').attr('src', audSrc);
                         streamer.emit('restream', {});
@@ -231,27 +231,27 @@
                 });
                 walker.on('connect', function () {
                     console.log('Walker Connected');
-                    $('#gofwd').live('mousedown', function () {
+                    $('#gofwd,#Mgofwd').on('mousedown', function () {
                         walker.emit('gofwd', {});
                     }).on('mouseup', function () {
                         walker.emit('stop', {});
                     });
-                    $('#gobkd').live('mousedown', function () {
+                    $('#gobkd,#Mgobkd').on('mousedown', function () {
                         walker.emit('gobkd', {});
                     }).on('mouseup', function () {
                         walker.emit('stop', {});
                     });
-                    $('#gorit').live('mousedown', function () {
+                    $('#gorit,#Mgorit').on('mousedown', function () {
                         walker.emit('gorit', {});
                     }).on('mouseup', function () {
                         walker.emit('stop', {});
                     });
-                    $('#golft').live('mousedown', function () {
+                    $('#golft,#Mgolft').on('mousedown', function () {
                         walker.emit('golft', {});
                     }).on('mouseup', function () {
                         walker.emit('stop', {});
                     });
-                    $('#estop').live('mousedown', function () {
+                    $('#estop,#Mestop').on('mousedown', function () {
                         walker.emit('estop', {});
                     });
                 }).on('status', function (data) {
