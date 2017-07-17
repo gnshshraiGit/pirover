@@ -286,14 +286,16 @@
                 $('.ErrPost').find('div.alert').addClass('alert-danger');
                 $('.overlay-error-panel').show();
                 $('.ErrPost').show();
+                $('.alert').show();
             },
             'addSuccess': function (message) {
                 this.clearStatus();
                 $('.ErrPost').find('strong.status-type').html('Success!');
                 $('.ErrPost').find('div.Msg').html(message);
-                $('.ErrPost').find('div.alert').addClass('alert-success').show();
+                $('.ErrPost').find('div.alert').addClass('alert-success');
                 $('.overlay-error-panel').show();
                 $('.ErrPost').show();
+                $('.alert').show();
             },
             'addDwnldLink': function (link) {
                 var dwnldAnchor = '<a href="'+ link +'">Click to download Video valid only for 5 mins</a>'
