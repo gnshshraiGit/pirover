@@ -270,27 +270,27 @@
                 });
                 walker.on('connect', function () {
                     console.log('Walker Connected');
-                    $('#gofwd,#Mgofwd').on('mousedown', function () {
+                    $('#gofwd,#Mgofwd').on('mousedown touchstart', function () {
                         walker.emit('gofwd', {});
-                    }).on('mouseup', function () {
+                    }).on('mouseup touchend', function () {
                         walker.emit('stop', {});
                     });
-                    $('#gobkd,#Mgobkd').on('mousedown', function () {
+                    $('#gobkd,#Mgobkd').on('mousedown touchstart', function () {
                         walker.emit('gobkd', {});
-                    }).on('mouseup', function () {
+                    }).on('mouseup touchend', function () {
                         walker.emit('stop', {});
                     });
-                    $('#gorit,#Mgorit').on('mousedown', function () {
+                    $('#gorit,#Mgorit').on('mousedown touchstart', function () {
                         walker.emit('gorit', {});
-                    }).on('mouseup', function () {
+                    }).on('mouseup touchend', function () {
                         walker.emit('stop', {});
                     });
-                    $('#golft,#Mgolft').on('mousedown', function () {
+                    $('#golft,#Mgolft').on('mousedown touchstart', function () {
                         walker.emit('golft', {});
-                    }).on('mouseup', function () {
+                    }).on('mouseup touchend', function () {
                         walker.emit('stop', {});
                     });
-                    $('#estop,#Mestop').on('mousedown', function () {
+                    $('#estop,#Mestop').on('click', function () {
                         walker.emit('estop', {});
                     });
                 }).on('status', function (data) {
