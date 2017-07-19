@@ -22,58 +22,38 @@ class Pirover_StreamerCmdSocket(BaseNamespace):
 class Pirover_WalkerCmdSocket(BaseNamespace):
         def on_connect(self):
                 print('Pi rover connected to server')
-                
-        def goFwd(self, data):
+
+        def checkAndWalk(self,direction,data):
                 global isBusy
                 global curntServing
                 if not isBusy:
                         curntServing = data['sid']
                         isBusy = True
-                        walker.direction = 'w'
+                        walker.direction = direction
                         walker.runRover(self,curntServing)
                         return
+                elif curntServing == data['sid']:
+                        pass
                 else:
                         self.emit('status',{'sid': data['sid'],'err':'Rover is busy serving another user'})
                         return
+                
+        
+        def goFwd(self, data):
+                self.checkAndWalk('w',data)
+                return
 
         def goRit(self, data):
-                global isBusy
-                global curntServing
-                if not isBusy:
-                        curntServing = data['sid']
-                        isBusy = True
-                        walker.direction = 'd'
-                        walker.runRover(self,curntServing)
-                        return
-                else:
-                        self.emit('status',{'sid': data['sid'],'err':'Rover is busy serving another user'})
-                        return
+                self.checkAndWalk('d',data)
+                return
 
         def goLft(self, data):
-                global isBusy
-                global curntServing
-                if not isBusy:
-                        curntServing = data['sid']
-                        isBusy = True
-                        walker.direction = 'a'
-                        walker.runRover(self,curntServing)
-                        return
-                else:
-                        self.emit('status',{'sid': data['sid'],'err':'Rover is busy serving another user'})
-                        return
+                self.checkAndWalk('a',data)
+                return
 
         def goBkd(self, data):
-                global isBusy
-                global curntServing
-                if not isBusy:
-                        curntServing = data['sid']
-                        isBusy = True
-                        walker.direction = 's'
-                        walker.runRover(self,curntServing)
-                        return
-                else:
-                        self.emit('status',{'sid': data['sid'],'err':'Rover is busy serving another user'})
-                        return
+                self.checkAndWalk('s',data)
+                return
                         
         def stop(self, data):
                 global isBusy
