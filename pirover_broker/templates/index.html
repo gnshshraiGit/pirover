@@ -256,18 +256,18 @@
                     streamer.emit('startstream', {});
                     $('img.video-panel').attr('src', vidSrc);
                     $('#audio-src').attr('src', audSrc);
-                    $('#audio-player').play();
+                    $('#audio-player')[0].play();
                     $('#stopStream').on('click', function () {
                         streamer.emit('stopstream', {});
                         $('img.video-panel').attr('src', '');
                         $('#audio-src').attr('src', '');
-                        $('#audio-player').pause();
+                        $('#audio-player')[0].pause();
                         util.addSuccess('Streaming stoped')
                     });
                     $('#reStream').on('click', function () {
                         $('img.video-panel').attr('src', vidSrc);
                         $('#audio-src').attr('src', audSrc);
-                        $('#audio-player').play();
+                        $('#audio-player')[0].play();
                         streamer.emit('restream', {});
                         util.addSuccess('Restreaming takes time to initiate , please wait 10-15 seconds')
                     });
