@@ -274,25 +274,25 @@
                     console.log('Walker Connected');
                     $('#gofwd,#Mgofwd').on('mousedown touchstart', function () {
                         walker.emit('gofwd', {});
-                    }).on('mouseup touchend', function () {
+                    }).on('mouseup touchend tap', function () {
                         walker.emit('stop', {});
                     });
                     $('#gobkd,#Mgobkd').on('mousedown touchstart', function () {
                         walker.emit('gobkd', {});
-                    }).on('mouseup touchend', function () {
+                    }).on('mouseup touchend tap', function () {
                         walker.emit('stop', {});
                     });
                     $('#gorit,#Mgorit').on('mousedown touchstart', function () {
                         walker.emit('gorit', {});
-                    }).on('mouseup touchend', function () {
+                    }).on('mouseup touchend tap', function () {
                         walker.emit('stop', {});
                     });
                     $('#golft,#Mgolft').on('mousedown touchstart', function () {
                         walker.emit('golft', {});
-                    }).on('mouseup touchend', function () {
+                    }).on('mouseup touchend tap', function () {
                         walker.emit('stop', {});
                     });
-                    $('#estop,#Mestop').on('click', function () {
+                    $('#estop,#Mestop').on('click tap', function () {
                         walker.emit('estop', {});
                     });
                 }).on('status', function (data) {
