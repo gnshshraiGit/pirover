@@ -256,7 +256,7 @@
                     streamer.emit('startstream', {});
                     $('img.video-panel').attr('src', vidSrc);
                     $('#audio-src').attr('src', audSrc);
-                    $('#audio-player').trigger('load');
+                    $('#audio-player').trigger('load').trigger('play');
                     $('#stopStream').on('click', function () {
                         streamer.emit('stopstream', {});
                         $('img.video-panel').attr('src', '');
@@ -267,7 +267,7 @@
                     $('#reStream').on('click', function () {
                         $('img.video-panel').attr('src', vidSrc);
                         $('#audio-src').attr('src', audSrc);
-                        $('#audio-player').trigger('load');
+                        $('#audio-player').trigger('load').trigger('play');
                         streamer.emit('restream', {});
                         util.addSuccess('Restreaming takes time to initiate , please wait 10-15 seconds')
                     });
@@ -285,6 +285,7 @@
                     $('#Mgolft').on('touchstart', function () { walker.emit('golft', {}); });
                     $('#gofwd,#gobkd,#gorit,#golft').on('mouseup', function () { walker.emit('stop', {}); });
                     $('#Mgofwd,#Mgobkd,#Mgorit,#Mgolft').on('touchend', function () { walker.emit('stop', {}); });
+                    $('#Mestop,#estop').on('click tap', function () { walker.emit('estop', {}); });
                 }).on('status', function (data) {
                     if(data.hasOwnProperty('direction'))
                         console.log(data['direction']);
