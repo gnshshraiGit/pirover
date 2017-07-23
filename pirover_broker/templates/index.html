@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.0/socket.io.min.js"></script>
     <style>
@@ -93,7 +92,7 @@
         <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-md-offset-1 col-lg-offset-2">
             <img class="video-panel" />
             <audio autoplay id="audio-player">
-                <source id="audio-src" src="http://rpimediaserver7181.cloudapp.net:8090/test.mp3" type="audio/mpeg">
+                <source id="audio-src" type="audio/mpeg">
             </audio>
         </div>
         <div class="hidden-xs hidden-sm col-md-3 col-lg-3 ">
@@ -247,7 +246,7 @@
                 $(this).hide();
             });
             (function () {
-               // var audSrc = "http://rpimediaserver7181.cloudapp.net:8090/test.mp3";
+                var audSrc = "http://rpimediaserver7181.cloudapp.net:8090/test.mp3";
                 var vidSrc = "http://rpimediaserver7181.cloudapp.net:8090/test.mjpg";
                 var streamer = io.connect('/StreamCmdSock');
                 var walker = io.connect('/WalkCmdSock');
@@ -256,57 +255,36 @@
                     console.log('Streamer Connected');
                     streamer.emit('startstream', {});
                     $('img.video-panel').attr('src', vidSrc);
-                   // $('#audio-src').attr('src', audSrc);
-                   // $('#audio-player')[0].play();
+                    $('#audio-src').attr('src', audSrc);
+                    $('#audio-player').trigger('play');
                     $('#stopStream').on('click', function () {
                         streamer.emit('stopstream', {});
                         $('img.video-panel').attr('src', '');
-                       // $('#audio-src').attr('src', '');
-                       // $('#audio-player')[0].pause();
+                        $('#audio-src').attr('src', '');
+                        $('#audio-player').trigger('pause');
                         util.addSuccess('Streaming stoped')
                     });
                     $('#reStream').on('click', function () {
                         $('img.video-panel').attr('src', vidSrc);
-                       // $('#audio-src').attr('src', audSrc);
-                       // $('#audio-player')[0].play();
+                        $('#audio-src').attr('src', audSrc);
+                        $('#audio-player').trigger('play');
                         streamer.emit('restream', {});
                         util.addSuccess('Restreaming takes time to initiate , please wait 10-15 seconds')
                     });
 
                 });
                 walker.on('connect', function () {
-                    var startEvent,stopEvent
-                    if (Modernizr.touch) {
-                        startEvent = 'touchstart';
-                        stopEvent = 'touchend';
-                    } else {
-                        startEvent = 'mousedown';
-                        stopEvent = 'mouseup';
-                    }
                     console.log('Walker Connected');
-                    $('#gofwd,#Mgofwd').on(startEvent, function () {
-                        walker.emit('gofwd', {});
-                    }).on(stopEvent, function () {
-                        walker.emit('stop', {});
-                    });
-                    $('#gobkd,#Mgobkd').on(startEvent, function () {
-                        walker.emit('gobkd', {});
-                    }).on(stopEvent, function () {
-                        walker.emit('stop', {});
-                    });
-                    $('#gorit,#Mgorit').on(startEvent, function () {
-                        walker.emit('gorit', {});
-                    }).on(stopEvent, function () {
-                        walker.emit('stop', {});
-                    });
-                    $('#golft,#Mgolft').on(startEvent, function () {
-                        walker.emit('golft', {});
-                    }).on(stopEvent, function () {
-                        walker.emit('stop', {});
-                    });
-                    $('#estop,#Mestop').on('click tap', function () {
-                        walker.emit('estop', {});
-                    });
+                    $('#gofwd').on('mousedown', function () { walker.emit('gofwd', {}); });
+                    $('#Mgofwd').on('touchstart', function () { walker.emit('gofwd', {}); });
+                    $('#gobkd').on('mousedown', function () { walker.emit('gobkd', {}); });
+                    $('#Mgobkd').on('touchstart', function () { walker.emit('gobkd', {}); });
+                    $('#gorit').on('mousedown', function () { walker.emit('gorit', {}); });
+                    $('#Mgorit').on('touchstart', function () { walker.emit('gorit', {}); });
+                    $('#golft').on('mousedown', function () { walker.emit('golft', {}); });
+                    $('#Mgolft').on('touchstart', function () { walker.emit('golft', {}); });
+                    $('#gofwd,#gobkd,#gorit,#golft').on('mouseup', function () { walker.emit('stop', {}); });
+                    $('#Mgofwd,#Mgobkd,#Mgorit,#Mgolft').on('touchend', function () { walker.emit('stop', {}); });
                 }).on('status', function (data) {
                     if(data.hasOwnProperty('direction'))
                         console.log(data['direction']);
