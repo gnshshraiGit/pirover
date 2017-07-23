@@ -278,7 +278,7 @@
                     console.log('Walker Connected');
                     $('#gofwd,#Mgofwd').on('mousedown', function () {
                         walker.emit('gofwd', {});
-                    }).on('mouseup touchend', function () {
+                    }).on('mouseup', function () {
                         walker.emit('stop', {});
                     });
                     $('#gobkd,#Mgobkd').on('mousedown touchstart', function () {
