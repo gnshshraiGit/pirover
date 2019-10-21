@@ -11,4 +11,4 @@ ptvsd==3.1.0
 python-engineio==1.6.1
 python-socketio==1.7.5
 six==1.10.0
-Werkzeug==0.12.2
+Werkzeug==0.15.3
